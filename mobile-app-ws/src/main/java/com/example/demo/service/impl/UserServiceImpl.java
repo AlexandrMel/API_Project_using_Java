@@ -2,6 +2,9 @@ package com.example.demo.service.impl;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.UserRepository;
@@ -24,6 +27,9 @@ UserRepository userRepository;
 @Autowired
 Utils utils;
 
+@Autowired
+BCryptPasswordEncoder bCryptPasswordEncoder;
+
 //Overriding createUser method declared in UserService Class
 @Override
 	public UserDto createUser(UserDto user) {
@@ -37,15 +43,23 @@ Utils utils;
 		String publicUserId = utils.generateUserId(30);
 	//Setting the new generated userId to the userEntity object using a setter
 		userEntity.setUserId(publicUserId);
-	//Setting a hard coded password for now
-		userEntity.setEncryptedPassword("test");
+	//Hashing the password before storing into database using BCrypt external package
+		userEntity.setEncryptedPassword(bCryptPasswordEncoder.encode(user.getPassword()));
 		
 	// Save the updated userEntity to database using  UserRepository Class default method (save) and store the return value
 	UserEntity storedUserDetails = userRepository.save(userEntity);
 	// Instantiating a return Value object from UserDto class and populating with the storedUserDetails data using Beans
 	UserDto returnValue = new UserDto();
 	BeanUtils.copyProperties(storedUserDetails, returnValue);
+	
+	//return
 	return returnValue;
 	}
+
+@Override
+public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+	// TODO Auto-generated method stub
+	return null;
+}
 
 }
