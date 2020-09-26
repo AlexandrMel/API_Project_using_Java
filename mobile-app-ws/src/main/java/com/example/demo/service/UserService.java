@@ -7,5 +7,6 @@ import com.example.demo.shared.dto.UserDto;
 //Interface for UserService
 public interface UserService extends UserDetailsService {
 	UserDto createUser(UserDto user);
+	UserDto getUser(String  email);
 
 }

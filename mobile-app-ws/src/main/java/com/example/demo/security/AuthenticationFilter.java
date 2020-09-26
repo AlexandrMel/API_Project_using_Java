@@ -16,6 +16,7 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import com.example.demo.SpringApplicationContext;
 import com.example.demo.service.UserService;
 import com.example.demo.shared.dto.UserDto;
 import com.example.demo.ui.model.request.UserLoginRequestModel;
@@ -24,11 +25,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 
-public class AuthenticationFIlter extends UsernamePasswordAuthenticationFilter {
+public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
-	private AuthenticationManager authenticationManager;
+	public AuthenticationManager authenticationManager;
 
-	public void AuthenticationFilter(AuthenticationManager authenticationManager) {
+	public AuthenticationFilter(AuthenticationManager authenticationManager) {
 		this.authenticationManager = authenticationManager;
 	}
 
@@ -58,12 +59,12 @@ public class AuthenticationFIlter extends UsernamePasswordAuthenticationFilter {
 
 		String token = Jwts.builder().setSubject(userName)
 				.setExpiration(new Date(System.currentTimeMillis() + SecurityConstants.EXPIRATION_TIME))
-				.signWith(SignatureAlgorithm.HS512, SecurityConstants.TOKEN_SECRET ).compact();
-		//UserService userService = (UserService) SpringApplicationContext.getBean("userServiceImpl");
-		//UserDto userDto = userService.getUser(userName);
+				.signWith(SignatureAlgorithm.HS512, SecurityConstants.getTokenSecret() ).compact();
+		UserService userService = (UserService) SpringApplicationContext.getBean("userServiceImpl");
+		UserDto userDto = userService.getUser(userName);
 
 		res.addHeader(SecurityConstants.HEADER_STRING, SecurityConstants.TOKEN_PREFIX + token);
-		//res.addHeader("UserID", userDto.getUserId());
+		res.addHeader("UserID", userDto.getUserId());
 
 	}
 }

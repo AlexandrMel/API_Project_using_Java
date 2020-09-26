@@ -1,0 +1,21 @@
+#
+# A fatal error has been detected by the Java Runtime Environment:
+#
+#  SIGSEGV (0xb) at pc=0x00007f2982aac231, pid=23623, tid=23640
+#
+# JRE version: OpenJDK Runtime Environment (14.0.2+12) (build 14.0.2+12-46)
+# Java VM: OpenJDK 64-Bit Server VM (14.0.2+12-46, mixed mode, tiered, compressed oops, g1 gc, linux-amd64)
+# Problematic frame:
+# C  [libjimage.so+0x4231]  ImageStrings::find(Endian*, char const*, int*, unsigned int)+0x71
+#
+# Core dump will be written. Default location: Core dumps may be processed with "/usr/share/apport/apport %p %s %c %d %P %E" (or dumping to /home/alexandrmel/Developer_Docs/Projects/JAVA/JAVA API/API_Project_using_Java/mobile-app-ws/core.23623)
+#
+# If you would like to submit a bug report, please visit:
+#   https://bugreport.java.com/bugreport/crash.jsp
+#
+
+---------------  S U M M A R Y ------------
+
+Command Line: -XX:+ShowCodeDetailsInExceptionMessages -agentlib:jdwp=transport=dt_socket,suspend=y,address=localhost:43051 -Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.port=37165 -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false -Djava.rmi.server.hostname=localhost -Dspring.jmx.enabled=true -Dspring.application.admin.enabled=true -Xverify:none -XX:TieredStopAtLevel=1 -Dspring.boot.project.name=mobile-app-ws -javaagent:/home/alexandrmel/.eclipse/org.eclipse.platform_4.17.0_1459503671_linux_gtk_x86_64/configuration/org.eclipse.osgi/257/0/.cp/lib/javaagent-shaded.jar -Dfile.encoding=UTF-8 com.example.demo.MobileAppWsApplication --spring.output.ansi.enabled=always
+
+Host: 

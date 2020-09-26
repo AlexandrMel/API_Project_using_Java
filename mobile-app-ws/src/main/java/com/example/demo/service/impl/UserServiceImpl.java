@@ -60,6 +60,18 @@ BCryptPasswordEncoder bCryptPasswordEncoder;
 	}
 
 @Override
+public UserDto getUser(String email)
+{
+	UserEntity userEntity = userRepository.findByEmail(email);
+	if(userEntity == null) throw new UsernameNotFoundException(email);
+	
+	UserDto returnValue = new UserDto();
+	BeanUtils.copyProperties(userEntity, returnValue);
+	return returnValue;
+}
+
+
+@Override
 public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
 	UserEntity userEntity = userRepository.findByEmail(email);
 	if(userEntity == null) throw new UsernameNotFoundException(email);
