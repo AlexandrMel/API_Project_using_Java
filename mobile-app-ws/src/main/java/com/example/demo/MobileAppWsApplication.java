@@ -19,14 +19,18 @@ public BCryptPasswordEncoder bCryptPasswordEncoder() {
 	return new BCryptPasswordEncoder();
 }
 
+//Imported Spring Application Context that help us get access to many resources throughout the project
+
 @Bean
 public SpringApplicationContext springApplicationContext() {
 	return new SpringApplicationContext();
 }
 
+//Added AppProperties so that we can have a more secure access to the TOKEN SECRET,
 @Bean(name="AppProperties")
 public AppProperties getAppProperties()
 {
 	return new AppProperties();
 }
+
 }

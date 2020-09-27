@@ -1,5 +1,7 @@
 package com.example.demo.ui.model.request;
 
+//User Details Model to convert received Json file data into Java object
+
 public class UserDetailsRequestModel {
 
 	private String firstName;

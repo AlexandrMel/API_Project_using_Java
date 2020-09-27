@@ -88,4 +88,17 @@ public class UserServiceImpl implements UserService {
 		return new User(userEntity.getEmail(), userEntity.getEncryptedPassword(), new ArrayList<>());
 	}
 
+	@Override
+	public UserDto getUserByUserId(String userId) {
+		// Getting the data from the database
+		UserEntity userEntity = userRepository.findByUserId(userId);
+		// Throw exception if not found
+		if (userEntity == null)
+			throw new UsernameNotFoundException(userId);
+		// Create populate and return user details object
+		UserDto returnValue = new UserDto();
+		BeanUtils.copyProperties(userEntity, returnValue);
+		return returnValue;
+	}
+
 }

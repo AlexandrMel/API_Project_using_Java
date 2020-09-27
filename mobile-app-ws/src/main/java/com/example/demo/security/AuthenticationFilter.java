@@ -24,6 +24,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+
 //Class that extends Spring Security package and where we configure the authentication rules that are being checked with every incoming request
 public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 //Method binding
@@ -32,6 +33,7 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 	public AuthenticationFilter(AuthenticationManager authenticationManager) {
 		this.authenticationManager = authenticationManager;
 	}
+
 //Here is the method responsible for checking if the request contains email and password and if these match the user 
 //data stored in the database
 	@Override
@@ -39,11 +41,11 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 			throws AuthenticationException {
 		try {
 
-			//String contentType = req.getHeader("Accept");
+			// String contentType = req.getHeader("Accept");
 // Reading the request body for email and password and storing in creds obj following the defined UserLoginRequestModel
 			UserLoginRequestModel creds = new ObjectMapper().readValue(req.getInputStream(),
 					UserLoginRequestModel.class);
-//
+//Verifying if the received email and password matches the data from the database
 			return authenticationManager.authenticate(
 					new UsernamePasswordAuthenticationToken(creds.getEmail(), creds.getPassword(), new ArrayList<>()));
 
@@ -51,20 +53,21 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 			throw new RuntimeException(e);
 		}
 	}
-
+//In case the data from the response matches the data in the database, generate, sign and return a JWT token
 	@Override
 	protected void successfulAuthentication(HttpServletRequest req, HttpServletResponse res, FilterChain chain,
 			Authentication auth) throws IOException, ServletException {
 
 		String userName = ((User) auth.getPrincipal()).getUsername();
-
+//Generate JWT token with expiration time and signed
 		String token = Jwts.builder().setSubject(userName)
 				.setExpiration(new Date(System.currentTimeMillis() + SecurityConstants.EXPIRATION_TIME))
-				.signWith(SignatureAlgorithm.HS512, SecurityConstants.getTokenSecret() ).compact();
+				.signWith(SignatureAlgorithm.HS512, SecurityConstants.getTokenSecret()).compact();
 		UserService userService = (UserService) SpringApplicationContext.getBean("userServiceImpl");
 		UserDto userDto = userService.getUser(userName);
-
+//Add generated token to the headers
 		res.addHeader(SecurityConstants.HEADER_STRING, SecurityConstants.TOKEN_PREFIX + token);
+//Add UserId to the headers for authorization purposes 
 		res.addHeader("UserID", userDto.getUserId());
 
 	}
