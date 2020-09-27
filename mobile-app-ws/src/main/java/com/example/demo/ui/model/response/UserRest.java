@@ -1,5 +1,7 @@
 package com.example.demo.ui.model.response;
 
+//Model for data that we send back from the server
+
 public class UserRest {
 private String userId;
 private String firstName;

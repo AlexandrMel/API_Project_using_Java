@@ -24,25 +24,26 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-
+//Class that extends Spring Security package and where we configure the authentication rules that are being checked with every incoming request
 public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
-
+//Method binding
 	public AuthenticationManager authenticationManager;
 
 	public AuthenticationFilter(AuthenticationManager authenticationManager) {
 		this.authenticationManager = authenticationManager;
 	}
-
+//Here is the method responsible for checking if the request contains email and password and if these match the user 
+//data stored in the database
 	@Override
 	public Authentication attemptAuthentication(HttpServletRequest req, HttpServletResponse res)
 			throws AuthenticationException {
 		try {
 
-			String contentType = req.getHeader("Accept");
-
+			//String contentType = req.getHeader("Accept");
+// Reading the request body for email and password and storing in creds obj following the defined UserLoginRequestModel
 			UserLoginRequestModel creds = new ObjectMapper().readValue(req.getInputStream(),
 					UserLoginRequestModel.class);
-
+//
 			return authenticationManager.authenticate(
 					new UsernamePasswordAuthenticationToken(creds.getEmail(), creds.getPassword(), new ArrayList<>()));
 

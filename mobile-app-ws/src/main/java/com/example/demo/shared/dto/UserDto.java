@@ -2,6 +2,8 @@ package com.example.demo.shared.dto;
 
 import java.io.Serializable;
 
+//User Data Transfer Object Model, used to pass the data throughout the project, has all the possible fields needed
+
 public class UserDto implements Serializable {
 
 	private static final long serialVersionUID = 4865903039190150223L;

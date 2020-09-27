@@ -1,5 +1,6 @@
 package com.example.demo.ui.model.request;
 
+//Model to convert JSON login data into Java Obj
 public class UserLoginRequestModel {
 
 	private String email;
