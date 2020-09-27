@@ -1,7 +1,7 @@
 package com.example.demo.ui.model.response;
 
 import java.util.Date;
-
+//Model for the Exception wrapper
 public class ErrorMessage {
 	
 	public ErrorMessage() {}

@@ -4,8 +4,6 @@ import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 
-import ch.qos.logback.core.Context;
-
 //SpringApplicationContext instantiation and configuration
 public class SpringApplicationContext implements ApplicationContextAware {
 

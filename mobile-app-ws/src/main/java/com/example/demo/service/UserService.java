@@ -1,14 +1,15 @@
 package com.example.demo.service;
 
+import com.example.demo.shared.dto.UserDto;
+
 import java.util.List;
 
 import org.springframework.security.core.userdetails.UserDetailsService;
 
-import com.example.demo.shared.dto.UserDto;
-
 //Interface for UserService
 public interface UserService extends UserDetailsService {
-//Self explanatory
+
+//Default methods that need to be overridden
 	UserDto createUser(UserDto user);
 
 	UserDto getUser(String email);

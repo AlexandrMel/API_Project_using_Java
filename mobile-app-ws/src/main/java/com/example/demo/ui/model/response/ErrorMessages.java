@@ -1,5 +1,5 @@
 package com.example.demo.ui.model.response;
-
+//Enums with predefined Exception Messages for better Exception Handling
 public enum ErrorMessages {
 
     MISSING_REQUIRED_FIELD("Missing required field. Please check documentation for required fields"),

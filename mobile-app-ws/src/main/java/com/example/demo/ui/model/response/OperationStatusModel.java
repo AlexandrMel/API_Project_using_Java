@@ -1,5 +1,5 @@
 package com.example.demo.ui.model.response;
-
+//Model for Exception Status Handling
 public class OperationStatusModel {
 	private String operationResult;
 	private String operationName;
