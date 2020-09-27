@@ -43,7 +43,7 @@ public class UserServiceImpl implements UserService {
 		// using the custom created method of UserRepository class verify if the email
 		// exists in the database and throw an exception with an explanatory message
 		if (userRepository.findByEmail(user.getEmail()) != null)
-			throw new RuntimeException("Record already exists");
+			throw new UserServiceException("Record already exists");
 
 		// Instantiating a userEntity object from class and populating with the received
 		// user data using Beans
