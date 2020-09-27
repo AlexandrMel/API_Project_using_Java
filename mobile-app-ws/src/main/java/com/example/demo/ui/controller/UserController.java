@@ -1,6 +1,8 @@
 package com.example.demo.ui.controller;
 
 import java.awt.PageAttributes.MediaType;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.exceptions.UserServiceException;
@@ -99,5 +102,15 @@ public class UserController {
 
 	
 	}
-
+@GetMapping
+public List<UserRest> getUsers(@RequestParam(value="page", defaultValue="0") int page, @RequestParam(value="limit", defaultValue="25") int limit){
+	List<UserRest> returnValue = new ArrayList<UserRest>();
+	List<UserDto> users = (List<UserDto>) userService.getUsers(page, limit);
+	for (UserDto userDto : users) {
+		UserRest userModel = new UserRest();
+		BeanUtils.copyProperties(userDto, userModel);
+		returnValue.add(userModel);
+	}
+	return returnValue;
+}
 }
