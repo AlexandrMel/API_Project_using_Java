@@ -16,10 +16,15 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.demo.exceptions.UserServiceException;
 import com.example.demo.service.UserService;
 import com.example.demo.shared.dto.UserDto;
+import com.example.demo.ui.model.request.RequestOperationName;
 import com.example.demo.ui.model.request.UserDetailsRequestModel;
 import com.example.demo.ui.model.response.ErrorMessages;
+import com.example.demo.ui.model.response.OperationStatusModel;
+import com.example.demo.ui.model.response.ResponseOperationStatus;
 import com.example.demo.ui.model.response.UserRest;
 import com.mysql.cj.xdevapi.Type;
+
+import ch.qos.logback.classic.pattern.Util;
 
 @RestController
 @RequestMapping("users") // http:/localhost:8081/users
@@ -28,12 +33,11 @@ public class UserController {
 	@Autowired
 	UserService userService;
 
-	@GetMapping(path = "/{id}" )
+	@GetMapping(path = "/{id}")
 	public UserRest getUser(@PathVariable String id) {
 
-		
 		UserDto userDto = userService.getUserByUserId(id);
-		
+
 		UserRest returnValue = new UserRest();
 		BeanUtils.copyProperties(userDto, returnValue);
 		return returnValue;
@@ -47,7 +51,8 @@ public class UserController {
 	 */
 
 	public UserRest createUser(@RequestBody UserDetailsRequestModel userDetails) throws Exception {
-if(userDetails.getFirstName() == null) throw new NullPointerException("The object is null");//UserServiceException(ErrorMessages.MISSING_REQUIRED_FIELD.getErrorMessage());
+		if (userDetails.getFirstName() == null)
+			throw new NullPointerException("The object is null");// UserServiceException(ErrorMessages.MISSING_REQUIRED_FIELD.getErrorMessage());
 		// Instantiate the UserRest model that contains predefined data field that will
 		// be used to send back data
 		UserRest returnValue = new UserRest();
@@ -71,13 +76,28 @@ if(userDetails.getFirstName() == null) throw new NullPointerException("The objec
 
 	}
 
-	@PutMapping
-	public String updateUser() {
-		return "update user was called";
+	@PutMapping(path = "/{id}")
+	public UserRest updateUser(@PathVariable String id, @RequestBody UserDetailsRequestModel userDetails ) {
+
+		
+		UserDto userDto = new UserDto();
+		BeanUtils.copyProperties(userDetails, userDto);
+		UserDto updatedUser = userService.updateUser(id, userDto);
+
+		UserRest returnValue = new UserRest();
+		BeanUtils.copyProperties(userDto, returnValue);
+		return returnValue;
 	}
 
-	@DeleteMapping
-	public String deleteUser() {
-		return "delete user was called";
+	@DeleteMapping(path = "/{id}")
+	public OperationStatusModel deleteUser(@PathVariable String id) {
+		OperationStatusModel returnValue = new OperationStatusModel();
+		returnValue.setOperationName(RequestOperationName.DELETE.name());
+		userService.deleteUser(id);
+		returnValue.setOperationResult(ResponseOperationStatus.SUCCESS.name());
+		return returnValue;
+
+	
 	}
+
 }
