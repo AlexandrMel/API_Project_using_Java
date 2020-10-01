@@ -12,8 +12,8 @@ of the request. Example:
 ```
 [POST] http://localhost:8081/users/login
 {
-    "username": "user2",
-    "password": "pass2"
+    "username": "user",
+    "password": "password"
 }
 ```
 
